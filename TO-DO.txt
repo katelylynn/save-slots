@@ -1,0 +1,3 @@
+- move "i love work" picture over so door isn't so squished
+- slightly smaller scale of bedroom + some decoration items
+- enemy door -> make sky instead of pure white, add doorframe
