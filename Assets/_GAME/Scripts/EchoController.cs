@@ -28,7 +28,9 @@ public class EchoController : Person
         active = true;
     }
 
-    // DO NOT CALL BASE UPDATE
+    // Summary:
+    //     Puppeteers the Echo based off of the script it is following.
+    //     base.Update() should NOT be called, as it is not relevant to Echos.
     public override void Update()
     {
         if (active)
@@ -44,7 +46,9 @@ public class EchoController : Person
         }
     }
 
-    // READ POSES INSTEAD
+    // Summary:
+    //     Called every script tick (via base.TickScript()). Reads the Pose states logged in the script
+    //     and sets Echo's animations accordingly.
     public override void HandlePose()
     {
         if (myPose == Pose.Using)
@@ -141,6 +145,9 @@ public class EchoController : Person
         Destroy(gameObject, 0.4f);
     }
 
+    // Summary:
+    //     Called every script tick (via Update()). Handles the Echo's imitation of Player's
+    //     past life by reading a state once every certain interval.
     void TickScript()
     {
         transform.position = script[scriptTick].Position;

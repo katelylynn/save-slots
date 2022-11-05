@@ -34,6 +34,9 @@ public class PlayerController : Person
         }
     }
 
+    // Summary:
+    //     Called every Update when movement is enabled. Handles controls and records for walking, jumping,
+    //     crouching, and poses. 
     void Move()
     {
         // Looking & moving
@@ -69,6 +72,9 @@ public class PlayerController : Person
         HandlePose();
     }
 
+    // Summary:
+    //     Called when "E" is pressed and movement is enabled. Makes Player drop current held object if they
+    //     are carrying one. If they are not, searches for nearby pickuppable objects and picks one up.
     void Interact()
     {
         Collider2D[] objs = new Collider2D[3];
@@ -97,6 +103,9 @@ public class PlayerController : Person
         }
     }
 
+    // Summary:
+    //     Called every Update (via Move()) when movement is enabled. Changes Player's
+    //     sprite and collider size when the shift button is pressed or depressed.
     void HandleCrouching()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -141,6 +150,8 @@ public class PlayerController : Person
         MyItem = newItem; // Log in a static var for the recorder to find
     }
 
+    // Summary:
+    //     Resets Player when the level resets (after a death). 
     public void Replace()
     {
         anim.SetBool("Walking", false);
@@ -152,6 +163,15 @@ public class PlayerController : Person
         transform.position = new Vector2(-22.84f, -2f);
     }
 
+    // Summary:
+    //     Condenses information about Player's position, direction, pose, and held item into
+    //     a State object for RecordingManager to save. 
+    //
+    // Parameters:
+    //   lastItem:
+    //     The last logged item in the recording (to check for pick-up events).
+    //   out updated:
+    //     Signifies whether there was a pick-up event.
     public static State GetState(string lastItem, out bool updated)
     {
         if (lastItem != MyItem)

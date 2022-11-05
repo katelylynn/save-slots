@@ -52,8 +52,10 @@ public class Person : MonoBehaviour
         col.offset = new Vector2(0f, -0.111f);
         anim.SetBool("Crouching", false);
     }
-    
 
+    // Summary:
+    //     Called every Update. Sets Person's pose and walking animation based 
+    //     on their velocity and proximity to the ground.
     public virtual void HandlePose()
     {
         // JUMPING - - - - - - - - - - - - - - - -
@@ -86,17 +88,23 @@ public class Person : MonoBehaviour
         }
     }
 
+    // Summary:
+    //     Called by a laser object when it touches a mirror that Person is holding. Triggers animations.
     public virtual void DeflectLaser()
     {
         anim.SetTrigger("DeflectLaser");
         ItemController.AllItems[myItem].Deflect();
     }
 
+    // Summary:
+    //     Called by a laser object when it touches an unprotected Person. Triggers death animation.
     public virtual void Vaporize()
     {
         anim.SetTrigger("DIE");
     }
 
+    // Summary:
+    //     Causes Person to drop the item they are currently holding.
     public virtual void DropItem()
     {
         ItemController.AllItems[myItem].PutDown(transform);
@@ -104,11 +112,25 @@ public class Person : MonoBehaviour
         anim.SetBool("Carrying", false);
     }
 
+    // Summary:
+    //     Officially sets pose (for PlayerController, both the current pose
+    //     and the pose being recorded. 
+    //
+    // Parameters:
+    //   newPose:
+    //     The new current pose.
     public virtual void SetPose(Pose newPose)
     {
         myPose = newPose;
     }
 
+    // Summary:
+    //     Officially sets current held item (for PlayerController, both the item held
+    //     and the item being recorded. 
+    //
+    // Parameters:
+    //   newItem:
+    //     The new item being held.
     public virtual void SetItem(string newItem)
     {
         myItem = newItem;
