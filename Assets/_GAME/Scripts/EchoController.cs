@@ -21,7 +21,8 @@ public class EchoController : Person
         base.Start();
         crouchCollider = transform.Find("Collider").gameObject;
     }
-
+    // Summary:
+    //     Called on instantiation (by RecordingManager), when the level is reset.
     public void BeginLife(State[] scriptIn)
     {
         script = scriptIn;
@@ -30,7 +31,7 @@ public class EchoController : Person
 
     // Summary:
     //     Puppeteers the Echo based off of the script it is following.
-    //     base.Update() should NOT be called, as it is not relevant to Echos.
+    //     base.Update() should NOT be called, as it is not relevant to Echoes.
     public override void Update()
     {
         if (active)

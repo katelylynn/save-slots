@@ -19,6 +19,12 @@ public class LaserController : MonoBehaviour
         transform.Translate(-Vector3.right * Time.deltaTime * 20f);
     }
 
+    // Summary:
+    //     Detects collisions with Persons or Mirrors.
+    //
+    // Parameters:
+    //   collision:
+    //     The object with which the laser collides.
     void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Collision Detected! Step: " + Step);
@@ -45,12 +51,21 @@ public class LaserController : MonoBehaviour
         }
     }
 
+    // Summary:
+    //     Spawns a quick flash sprite when the laser reflects off of a mirror.
+    //
+    // Parameters:
+    //   pos:
+    //     The position to spawn the flash effect.
     void FlashEffect(Vector2 pos)
     {
         GameObject f = Instantiate(p_FlashEffect, pos, Quaternion.identity).gameObject;
         Destroy(f, 0.4f);
     }
 
+    // Summary:
+    //     Handles deflection of the laser off of a mirror. The transformation the laser experiences depends
+    //     on how many deflections it has undergone already.
     void Deflect()
     {
         FlashEffect(transform.position + transform.TransformDirection(Vector3.right * -1.5f));

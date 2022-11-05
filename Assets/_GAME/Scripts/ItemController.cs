@@ -37,6 +37,9 @@ public class ItemController : MonoBehaviour
         Reset += Replace;
     }
 
+    // Summary:
+    //     Called one time on account of all ItemController scripts, to initialize 
+    //     static variables.
     public static void StartStatic()
     {
         itemFolder = GameObject.Find("Items").transform;
@@ -56,6 +59,12 @@ public class ItemController : MonoBehaviour
             CheckIfOnFloor();
     }
 
+    // Summary:
+    //     Called when a Person interacts with a pickuppable object. Converts this item
+    //     to its held form.
+    // Parameters:
+    //   entity:
+    //     The Transform of the Person picking up this item.
     public string PickUp(Transform entity)
     {
         Debug.Log(Item + " picked up!");
@@ -69,6 +78,12 @@ public class ItemController : MonoBehaviour
         return Item;
     }
 
+    // Summary:
+    //     Called when a Person drops the item they're carrying. Converts this item back
+    //     to its object form.
+    // Parameters:
+    //   entity:
+    //     The Transform of the Person picking up this item.
     public void PutDown(Transform entity)
     {
         IsHeld = false;
@@ -82,6 +97,9 @@ public class ItemController : MonoBehaviour
             FixMirror();
     }
 
+    // Summary:
+    //     Checks whether the bottom of this item is within a tiny radius of the ground,
+    //     and prevents it from sliding if it is.
     void CheckIfOnFloor()
     {
         Collider2D[] hitColliders = new Collider2D[2];
@@ -94,7 +112,8 @@ public class ItemController : MonoBehaviour
         rb.velocity = Vector2.zero;
     }
 
-    // ONLY FOR MIRRORS
+    // Summary:
+    //     Only for Mirror items. Activates animation for a Mirror item when deflecting a laser. 
     public void Deflect()
     {
         if (!Item.Contains("Mirror"))
@@ -106,7 +125,8 @@ public class ItemController : MonoBehaviour
         LeanTween.delayedCall(0.4f, FixMirror);
     }
 
-    // ALSO ONLY FOR MIRRORS
+    // Summary:
+    //     Only for Mirror items. Ends animation for a Mirror item when deflecting a laser.
     void FixMirror()
     {
         if (!Item.Contains("Mirror") || name != "T_MirrorItem")
@@ -117,11 +137,15 @@ public class ItemController : MonoBehaviour
         name = "MirrorItem";
     }
 
+    // Summary:
+    //     Resets item to its starting position when the level is reset.
     void Replace()
     {
         transform.position = originalPos;
     }
 
+    // Summary:
+    //     FOR LEVEL BUILDING: makes it easier to set the location of the bottom of the item in the Scene window.
     private void OnDrawGizmos()
     {
         Debug.DrawLine(transform.position + new Vector3(1, BottomEdge, 0), transform.position + new Vector3(-1, BottomEdge, 0), Color.blue);

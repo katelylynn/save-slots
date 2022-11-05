@@ -19,13 +19,17 @@ public class GameManager : MonoBehaviour
             KillerController.Attack();
     }
 
+    // Summary:
+    //     Called when the level is reset, to begin the recording process.
     public static void Begin()
     {
         RecordingManager.BeginRecording();
-        SpawnEchos();
+        SpawnEchoes();
     }
 
-    public static void SpawnEchos()
+    // Summary:
+    //     Spawns an Echo for each of the Player's filled save slots.
+    public static void SpawnEchoes()
     {
         for (int i = 0; i < 3; i++)
         {

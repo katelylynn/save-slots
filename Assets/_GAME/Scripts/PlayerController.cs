@@ -172,6 +172,8 @@ public class PlayerController : Person
     //     The last logged item in the recording (to check for pick-up events).
     //   out updated:
     //     Signifies whether there was a pick-up event.
+    // Returns:
+    //     The current State of the Player.
     public static State GetState(string lastItem, out bool updated)
     {
         if (lastItem != MyItem)

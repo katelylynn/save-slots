@@ -30,7 +30,9 @@ public class RecordingManager : MonoBehaviour
         EventManager.ResetLevel += Begin;
     }
 
-    // Update is called once per frame
+    // Summary:
+    //     Manages timing for the recording system, so that it only logs a state TicksPerSecond
+    //     times every second. 
     void Update()
     {
         if (Recording)
@@ -47,17 +49,23 @@ public class RecordingManager : MonoBehaviour
         }
 
     }
-
+    // Summary:
+    //     Called when the level is reset (by GameManager) to begin recording Player movements.
     public static void BeginRecording()
     {
         Instance.Recording = true;
     }
 
+    // Summary:
+    //     Called from the PlayerDeath event to stop recording Player movements.
     public static void StopRecording()
     {
         Instance.Recording = false;
     }
 
+    // Summary:
+    //     Called every script tick (by Update), requests the current state of the player and logs
+    //     it in a master record.
     public static void LogState()
     {
         State s = PlayerController.GetState(CurrentItem, out bool u);
@@ -66,6 +74,8 @@ public class RecordingManager : MonoBehaviour
         CurrentScript.Add(s);
     }
 
+    // Summary:
+    //     Called by MenuManager to save the past Player life to one of the three save slots.
     public static void SaveScript(int index)
     {
         AllScripts[index] = CurrentScript.ToArray();
@@ -74,13 +84,17 @@ public class RecordingManager : MonoBehaviour
         CurrentScript.Clear();
     }
 
+    // Summary:
+    //     Called when the level is reset to spawn an Echo for one of the Player's save slots.
     public static void SpawnEcho(int index)
     {
         EchoController sc = Instantiate(p_Echoes[index]).GetComponent<EchoController>();
         Echoes.Add(sc);
         sc.BeginLife(AllScripts[index]);
     }
-    
+
+    // Summary:
+    //     Called when the level is reset. Clears past Echoes. 
     public static void Begin()
     {
         Echoes.Clear();
