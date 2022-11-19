@@ -29,8 +29,11 @@ public class PlayerController : Person
         if (MovementEnabled)
         {
             Move();
-            if (Input.GetKeyDown(KeyCode.E))
-                Interact();
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (!Interact())
+                    StartPushing();
+            }
         }
     }
 
@@ -57,7 +60,7 @@ public class PlayerController : Person
                 rb.velocity = new Vector2(deltaX, rb.velocity.y);
 
             // Jumping
-            if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && onFloor)
+            if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && onFloor)
             {
                 anim.SetTrigger("Jump");
                 rb.AddForce(new Vector2(0, 14000));
@@ -75,7 +78,7 @@ public class PlayerController : Person
     // Summary:
     //     Called when "E" is pressed and movement is enabled. Makes Player drop current held object if they
     //     are carrying one. If they are not, searches for nearby pickuppable objects and picks one up.
-    void Interact()
+    bool Interact()
     {
         Collider2D[] objs = new Collider2D[3];
         int objNum = Physics2D.OverlapCircleNonAlloc(transform.position, 0.35f, objs, ItemController.LayerItem);
@@ -84,11 +87,11 @@ public class PlayerController : Person
         if (MyItem != "Empty")
         {
             DropItem();
-            return;
+            return true;
         }
 
         if (objNum == 0)
-            return;
+            return false;
 
         // Pick up objects
         foreach (Collider2D c in objs)
@@ -98,9 +101,11 @@ public class PlayerController : Person
             {
                 SetItem(item.PickUp(transform));
                 anim.SetBool("Carrying", true);
-                return;
+                return true;
             }
         }
+
+        return false;
     }
 
     // Summary:

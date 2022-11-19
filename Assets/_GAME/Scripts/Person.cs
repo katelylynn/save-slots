@@ -112,6 +112,14 @@ public class Person : MonoBehaviour
         anim.SetBool("Carrying", false);
     }
 
+    public virtual void StartPushing()
+    {
+
+    }
+
+
+
+
     // Summary:
     //     Officially sets pose (for PlayerController, both the current pose
     //     and the pose being recorded. 
