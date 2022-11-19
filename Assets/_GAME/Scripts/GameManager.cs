@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     {
         Cursor.visible = false;
         EventManager.ResetLevel += Begin;
-        Begin();
     }
 
     // Update is called once per frame
@@ -24,20 +23,6 @@ public class GameManager : MonoBehaviour
     //     Called when the level is reset, to begin the recording process.
     public static void Begin()
     {
-        RecordingManager.BeginRecording();
-        SpawnEchoes();
-    }
-
-    // Summary:
-    //     Spawns an Echo for each of the Player's filled save slots.
-    public static void SpawnEchoes()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            if (RecordingManager.WrittenScripts[i])
-            {
-                RecordingManager.SpawnEcho(i);
-            }
-        }
+        
     }
 }

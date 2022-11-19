@@ -28,6 +28,7 @@ public class RecordingManager : MonoBehaviour
         p_Echoes[2] = Resources.Load<GameObject>("Prefabs/Echo2");
         EventManager.PlayerDeath += StopRecording;
         EventManager.ResetLevel += Begin;
+        Begin();
     }
 
     // Summary:
@@ -85,6 +86,19 @@ public class RecordingManager : MonoBehaviour
     }
 
     // Summary:
+    //     Spawns an Echo for each of the Player's filled save slots.
+    public static void SpawnEchoes()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (WrittenScripts[i])
+            {
+                SpawnEcho(i);
+            }
+        }
+    }
+
+    // Summary:
     //     Called when the level is reset to spawn an Echo for one of the Player's save slots.
     public static void SpawnEcho(int index)
     {
@@ -98,6 +112,8 @@ public class RecordingManager : MonoBehaviour
     public static void Begin()
     {
         Echoes.Clear();
+        BeginRecording();
+        SpawnEchoes();
     }
 }
 
