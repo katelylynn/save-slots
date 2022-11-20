@@ -3,24 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemController : MonoBehaviour
+public class Item : MonoBehaviour
 {
     public static event Action Reset;
 
     static Transform itemFolder = null;
-    static Sprite[] mirrorSprites = new Sprite[2];
     public static int LayerItem;
     public static Dictionary<string, Vector2> ItemOffsets = new Dictionary<string, Vector2>();
-    public static Dictionary<string, ItemController> AllItems = new Dictionary<string, ItemController>();
-    public string Item;
+    public static Dictionary<string, Item> AllItems = new Dictionary<string, Item>();
+    public string ItemId;
     public bool Pickuppable;
     public bool IsHeld = false;
     public bool IsMoving = false;
     [SerializeField] float BottomEdge;
 
-    SpriteRenderer sRenderer;
-    Rigidbody2D rb;
-    BoxCollider2D col;
+    protected SpriteRenderer sRenderer;
+    protected Rigidbody2D rb;
+    protected BoxCollider2D col;
     Vector3 originalPos;
 
     // Start is called before the first frame update
@@ -29,7 +28,7 @@ public class ItemController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
         sRenderer = GetComponent<SpriteRenderer>();
-        AllItems.Add(Item, this);
+        AllItems.Add(ItemId, this);
         if (itemFolder == null)
             StartStatic();
 
@@ -38,7 +37,7 @@ public class ItemController : MonoBehaviour
     }
 
     // Summary:
-    //     Called one time on account of all ItemController scripts, to initialize 
+    //     Called one time on account of all Item scripts, to initialize 
     //     static variables.
     public static void StartStatic()
     {
@@ -48,8 +47,7 @@ public class ItemController : MonoBehaviour
         ItemOffsets.Add("Mirror01", new Vector2(0.2f, 0.02f));
         ItemOffsets.Add("Anchor", new Vector2(0.2f, 0.02f));
 
-        mirrorSprites[0] = Resources.Load<Sprite>("Sprites/mirror_tilted");
-        mirrorSprites[1] = Resources.Load<Sprite>("Sprites/mirror_normal");
+        MirrorItem.SetupSprites();
     }
 
     // Update is called once per frame
@@ -67,15 +65,14 @@ public class ItemController : MonoBehaviour
     //     The Transform of the Person picking up this item.
     public string PickUp(Transform entity)
     {
-        Debug.Log(Item + " picked up!");
         IsHeld = true;
         IsMoving = true;
         transform.parent = entity;
-        transform.localPosition = ItemOffsets[Item];
+        transform.localPosition = ItemOffsets[ItemId];
         rb.isKinematic = true;
         col.isTrigger = true;
 
-        return Item;
+        return ItemId;
     }
 
     // Summary:
@@ -84,7 +81,7 @@ public class ItemController : MonoBehaviour
     // Parameters:
     //   entity:
     //     The Transform of the Person picking up this item.
-    public void PutDown(Transform entity)
+    public virtual void PutDown(Transform entity)
     {
         IsHeld = false;
         transform.parent = itemFolder;
@@ -92,9 +89,6 @@ public class ItemController : MonoBehaviour
         col.isTrigger = false;
         Vector2 momentum = new Vector2(entity.eulerAngles.y == 0 ? 5 : -5, 10);
         rb.AddForce(momentum, ForceMode2D.Impulse);
-
-        if (name == "T_MirrorItem")
-            FixMirror();
     }
 
     // Summary:
@@ -110,31 +104,6 @@ public class ItemController : MonoBehaviour
         // Has reached the floor
         IsMoving = false;
         rb.velocity = Vector2.zero;
-    }
-
-    // Summary:
-    //     Only for Mirror items. Activates animation for a Mirror item when deflecting a laser. 
-    public void Deflect()
-    {
-        if (!Item.Contains("Mirror"))
-            return;
-
-        sRenderer.sprite = mirrorSprites[0];
-        transform.Translate(new Vector2(-0.1f, 0f));
-        name = "T_MirrorItem";
-        LeanTween.delayedCall(0.4f, FixMirror);
-    }
-
-    // Summary:
-    //     Only for Mirror items. Ends animation for a Mirror item when deflecting a laser.
-    void FixMirror()
-    {
-        if (!Item.Contains("Mirror") || name != "T_MirrorItem")
-            return;
-
-        sRenderer.sprite = mirrorSprites[1];
-        transform.Translate(new Vector2(0.1f, 0f));
-        name = "MirrorItem";
     }
 
     // Summary:
