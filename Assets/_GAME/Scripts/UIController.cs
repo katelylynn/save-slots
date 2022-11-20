@@ -45,7 +45,7 @@ public class UIController : MonoBehaviour
         if (PrintEvents.Contains(DeathController.DeathEvent))
             MonologueEvent(DeathController.DeathEvent);
         else
-            menu.ShowMenu();
+            menu.DisplayMenu(true);
     }
 
     public void OnReset()
@@ -67,7 +67,7 @@ public class UIController : MonoBehaviour
 
     public static void ShowMenu()
     {
-        Instance.menu.ShowMenu();
+        Instance.menu.DisplayMenu(true);
     }
 }
 
