@@ -107,6 +107,10 @@ public class Item : MonoBehaviour
     }
 
     // Summary:
+    //     Only for Mirror items. Activates animation for a Mirror item when deflecting a laser. 
+    public virtual void Deflect() { }
+
+    // Summary:
     //     Resets item to its starting position when the level is reset.
     void Replace()
     {

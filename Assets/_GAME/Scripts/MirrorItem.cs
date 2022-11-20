@@ -27,7 +27,7 @@ public class MirrorItem : Item
 
     // Summary:
     //     Only for Mirror items. Activates animation for a Mirror item when deflecting a laser. 
-    public void Deflect()
+    public override void Deflect()
     {
         sRenderer.sprite = mirrorSprites[0];
         transform.Translate(new Vector2(-0.1f, 0f));

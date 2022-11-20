@@ -12,6 +12,7 @@ public class PlayerController : Person
     public static PlayerController Instance;
 
     public static bool MovementEnabled = true;
+    float lastInput = 0;
     bool pushing = false;
     
 
@@ -47,21 +48,19 @@ public class PlayerController : Person
     void Move()
     {
         // Looking & moving
-        if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && MyDirection)
-        {
-            transform.eulerAngles = new Vector3(0, 180, 0);
-            MyDirection = false;
-        }
-        if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && !MyDirection)
-        {
-            transform.eulerAngles = new Vector3(0, 0, 0);
-            MyDirection = true;
-        }
+        if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.RightArrow))
+            UpdateDirection(false);
+        if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.LeftArrow))
+            UpdateDirection(true);
+        if ((Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow)) && (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
+            UpdateDirection(true);
+        if ((Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow)) && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)))
+            UpdateDirection(false);
 
         if (!Input.GetKey(KeyCode.LeftShift))
         {
             float deltaX = Input.GetAxis("Horizontal") * (onFloor ? 4f : 2f);
-                rb.velocity = new Vector2(deltaX, rb.velocity.y);
+            rb.velocity = new Vector2(deltaX, rb.velocity.y);
 
             // Jumping
             if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && onFloor)
@@ -77,6 +76,14 @@ public class PlayerController : Person
         // Log position and pose
         MyPosition = new Vector2(transform.position.x, transform.position.y);
         HandlePose();
+    }
+
+    void UpdateDirection(bool dir)
+    {
+        if (dir == MyDirection)
+            return;
+        transform.eulerAngles = new Vector3(0, dir ? 0 : 180, 0);
+        MyDirection = dir;
     }
 
     // Summary:
