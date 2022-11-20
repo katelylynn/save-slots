@@ -142,7 +142,10 @@ public class PlayerController : Person
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        
+        if (pushing && collision.transform.tag == "Pushable")
+        {
+            StartPushing(collision.transform.GetComponent<PushableObject>());
+        }
     }
 
     public override void DeflectLaser()

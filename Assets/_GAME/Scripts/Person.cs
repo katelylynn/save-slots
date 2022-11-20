@@ -112,7 +112,7 @@ public class Person : MonoBehaviour
         anim.SetBool("Carrying", false);
     }
 
-    public virtual void StartPushing()
+    public virtual void StartPushing(PushableObject obj)
     {
 
     }
