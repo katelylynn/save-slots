@@ -67,7 +67,7 @@ public class TextBoxController : MonoBehaviour
         isComplete = false;
         text.maxVisibleCharacters = 0;
         text.text = currentMonologue[index];
-        LeanTween.value(gameObject, 0f, text.text.Length, text.text.Length * 0.05f)
+        LeanTween.value(gameObject, 0f, text.text.Length, text.text.Length * 0.01f)
                  .setOnUpdate(e => text.maxVisibleCharacters = (int)e)
                  .setOnComplete(() => { isComplete = true; });
         index++;
