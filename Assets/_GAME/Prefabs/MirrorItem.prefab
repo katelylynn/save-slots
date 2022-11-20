@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4594116624122779318}
   - component: {fileID: 4594116624122779317}
   - component: {fileID: 4594116624122779316}
-  - component: {fileID: 4594116624122779321}
+  - component: {fileID: 1852345617883428107}
   m_Layer: 9
   m_Name: MirrorItem
   m_TagString: Untagged
@@ -134,7 +134,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4594116624122779321
+--- !u!114 &1852345617883428107
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,10 +143,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4594116624122779320}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff7b01e3d6843a54482538eecc47a490, type: 3}
+  m_Script: {fileID: 11500000, guid: 605a632057178d54da644ff35da29ed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Item: Mirror01
+  ItemId: 
   Pickuppable: 1
   IsHeld: 0
   IsMoving: 0

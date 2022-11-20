@@ -12,6 +12,7 @@ public class PlayerController : Person
     public static PlayerController Instance;
 
     public static bool MovementEnabled = true;
+    bool pushing = false;
     
 
     // Start is called before the first frame update
@@ -32,8 +33,11 @@ public class PlayerController : Person
             if (Input.GetMouseButtonDown(0))
             {
                 if (!Interact())
-                    StartPushing();
+                    pushing = true;
             }
+
+            if (Input.GetMouseButtonUp(0) && pushing)
+                pushing = false;
         }
     }
 
@@ -81,7 +85,7 @@ public class PlayerController : Person
     bool Interact()
     {
         Collider2D[] objs = new Collider2D[3];
-        int objNum = Physics2D.OverlapCircleNonAlloc(transform.position, 0.35f, objs, ItemController.LayerItem);
+        int objNum = Physics2D.OverlapCircleNonAlloc(transform.position, 0.35f, objs, Item.LayerItem);
 
         // Drop objects
         if (MyItem != "Empty")
@@ -96,7 +100,7 @@ public class PlayerController : Person
         // Pick up objects
         foreach (Collider2D c in objs)
         {
-            ItemController item = c.GetComponent<ItemController>();
+            Item item = c.GetComponent<Item>();
             if (!item.IsHeld && item.Pickuppable)
             {
                 SetItem(item.PickUp(transform));
@@ -127,6 +131,11 @@ public class PlayerController : Person
             SetPose(Pose.Idle);
             base.CrouchOff();
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        
     }
 
     public override void DeflectLaser()

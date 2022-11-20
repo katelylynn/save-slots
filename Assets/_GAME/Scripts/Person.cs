@@ -93,7 +93,7 @@ public class Person : MonoBehaviour
     public virtual void DeflectLaser()
     {
         anim.SetTrigger("DeflectLaser");
-        ItemController.AllItems[myItem].Deflect();
+        Item.AllItems[myItem].Deflect();
     }
 
     // Summary:
@@ -107,7 +107,7 @@ public class Person : MonoBehaviour
     //     Causes Person to drop the item they are currently holding.
     public virtual void DropItem()
     {
-        ItemController.AllItems[myItem].PutDown(transform);
+        Item.AllItems[myItem].PutDown(transform);
         SetItem("Empty");
         anim.SetBool("Carrying", false);
     }
