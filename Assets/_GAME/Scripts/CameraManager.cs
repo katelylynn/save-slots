@@ -79,6 +79,18 @@ public class CameraManager : MonoBehaviour
 
     }
 
+    public Vector3 GetKitchenCoords(){
+
+        return kitchenCoords;
+
+    }
+
+    public float GetKitchenOrtho(){
+
+        return kitchenOrtho;
+
+    }
+
     public Vector3 GetBasementMainCoords() {
 
         return basementMainCoords;

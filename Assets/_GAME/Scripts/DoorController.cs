@@ -7,23 +7,40 @@ public class DoorController : MonoBehaviour
 
     CameraManager cameraScript;
 
-    private Vector3 newPos = new Vector3(-5, -11, 0);
+    private Vector3 kitchenStairs = new Vector3(-4.2f, -2f, 0f);
+    private Vector3 basementStairs = new Vector3(-6.5f, -11f, 0f);
 
-    void Start() {
-
-
-    }
 
     void OnTriggerStay2D(Collider2D other) {
 
-        if (other.name == "Character" && Input.GetKeyDown(KeyCode.T)) {
+        if (Input.GetKeyDown(KeyCode.T) && other.name == "Character") {
 
             cameraScript = other.gameObject.GetComponent(typeof(CameraManager)) as CameraManager;
-            
-            cameraScript.SetCurrentLevel(CameraManager.level.Basement);
-            cameraScript.TransformCamera(cameraScript.GetBasementMainCoords(), cameraScript.GetBasementMainOrtho());     
 
-            other.transform.position = newPos;      
+            if (gameObject.tag == "main-basement-stairs" && cameraScript.GetCurrentLevel() == CameraManager.level.Main)
+                ChangeLevels(other, "Basement");
+            else if (gameObject.tag == "main-basement-stairs" && cameraScript.GetCurrentLevel() == CameraManager.level.Basement)
+                ChangeLevels(other, "Main");
+
+        }
+
+    }
+
+    void ChangeLevels(Collider2D other, string newLevel){
+
+        if (newLevel == "Main") {
+
+            cameraScript.SetCurrentLevel(CameraManager.level.Main);
+            cameraScript.TransformCamera(cameraScript.GetKitchenCoords(), cameraScript.GetKitchenOrtho());  
+
+            other.transform.position = kitchenStairs; 
+
+        } else if (newLevel == "Basement") {
+
+            cameraScript.SetCurrentLevel(CameraManager.level.Basement);
+            cameraScript.TransformCamera(cameraScript.GetBasementMainCoords(), cameraScript.GetBasementMainOrtho());  
+
+            other.transform.position = basementStairs;    
 
         }
 
