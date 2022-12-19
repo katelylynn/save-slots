@@ -12,6 +12,9 @@ TagManager:
   - living-room
   - hallway
   - Pushable
+  - basement-garage
+  - basement-main
+  - basement-storage
   layers:
   - Default
   - TransparentFX
