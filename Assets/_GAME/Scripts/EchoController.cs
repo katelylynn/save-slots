@@ -57,13 +57,13 @@ public class EchoController : Person
             if (myItem != "Empty") // PICK UP - - - - -
             {
                 Collider2D[] objs = new Collider2D[3];
-                int objNum = Physics2D.OverlapCircleNonAlloc(transform.position, 0.35f, objs, Item.LayerItem);
+                int objNum = Physics2D.OverlapCircleNonAlloc(transform.position, 0.35f, objs, Item.LayerCarry);
                 
                 if (objNum > 0)
                 {
                     foreach (Collider2D c in objs)
                     {
-                        Item item = c.GetComponent<Item>();
+                        CarryableItem item = c.GetComponent<CarryableItem>();
                         if (!item.IsHeld && item.Pickuppable && item.ItemId == myItem)
                         {
                             SetItem(item.PickUp(transform));

@@ -32,7 +32,7 @@ public class LaserController : MonoBehaviour
         if (collision.transform.tag == "Person")
         {
             Person p = collision.transform.GetComponent<Person>();
-            if (p.HasMirror && collision.transform.eulerAngles.y == 0 && Step % 2 == 0)
+            if (p.hasMirror && collision.transform.eulerAngles.y == 0 && Step % 2 == 0)
             {
                 p.DeflectLaser();
                 Deflect();

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MirrorItem : Item
+public class MirrorItem : CarryableItem
 {
     static Sprite[] mirrorSprites = new Sprite[2];
     bool tilted = false;

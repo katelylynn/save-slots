@@ -12,9 +12,9 @@ public class Person : MonoBehaviour
     protected Animator anim;
 
     protected bool onFloor = true;
+    public bool hasMirror = false;
     protected Pose myPose;
     public string myItem;
-    public bool HasMirror = false;
 
     // Start is called before the first frame update
     public virtual void Start()
@@ -112,17 +112,15 @@ public class Person : MonoBehaviour
         anim.SetBool("Carrying", false);
     }
 
-    public virtual void StartPushing(PushableObject obj)
+    public virtual void StartPushing(PushableItem i)
     {
-
+        
     }
-
-
 
 
     // Summary:
     //     Officially sets pose (for PlayerController, both the current pose
-    //     and the pose being recorded. 
+    //     and the pose being recorded). 
     //
     // Parameters:
     //   newPose:
@@ -134,15 +132,29 @@ public class Person : MonoBehaviour
 
     // Summary:
     //     Officially sets current held item (for PlayerController, both the item held
-    //     and the item being recorded. 
+    //     and the item being recorded). 
     //
     // Parameters:
     //   newItem:
-    //     The new item being held.
+    //     The id of the new CarryableItem being held.
     public virtual void SetItem(string newItem)
     {
         myItem = newItem;
-        if (newItem.Contains("Mirror") != HasMirror)
-            HasMirror = newItem.Contains("Mirror");
+
+        bool acquiredMirror = newItem.GetType() == typeof(MirrorItem);
+        if (hasMirror != acquiredMirror)
+            hasMirror = acquiredMirror;
+    }
+
+    // Summary:
+    //     Officially sets current pushing item (for PlayerController, both the item held
+    //     and the item being recorded). 
+    //
+    // Parameters:
+    //   newItem:
+    //     The id of the new PushableItem being pushed.
+    public virtual void SetPushing(string newItem)
+    {
+        myItem = newItem;
     }
 }

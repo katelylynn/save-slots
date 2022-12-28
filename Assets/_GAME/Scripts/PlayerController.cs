@@ -12,9 +12,8 @@ public class PlayerController : Person
     public static PlayerController Instance;
 
     public static bool MovementEnabled = true;
-    float lastInput = 0;
-    bool pushing = false;
-    
+    byte pushing = 0;
+
 
     // Start is called before the first frame update
     public override void Start()
@@ -31,14 +30,14 @@ public class PlayerController : Person
         if (MovementEnabled)
         {
             Move();
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && pushing == 0)
             {
                 if (!Interact())
-                    pushing = true;
+                    pushing = 1;
             }
 
-            if (Input.GetMouseButtonUp(0) && pushing)
-                pushing = false;
+            if (Input.GetMouseButtonUp(0) && pushing > 0)
+                pushing = 0;
         }
     }
 
@@ -63,7 +62,7 @@ public class PlayerController : Person
             rb.velocity = new Vector2(deltaX, rb.velocity.y);
 
             // Jumping
-            if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && onFloor)
+            if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && onFloor && pushing < 2)
             {
                 anim.SetTrigger("Jump");
                 rb.AddForce(new Vector2(0, 14000));
@@ -87,12 +86,12 @@ public class PlayerController : Person
     }
 
     // Summary:
-    //     Called when "E" is pressed and movement is enabled. Makes Player drop current held object if they
+    //     Called when LeftClick is pressed and movement is enabled. Makes Player drop current held object if they
     //     are carrying one. If they are not, searches for nearby pickuppable objects and picks one up.
     bool Interact()
     {
         Collider2D[] objs = new Collider2D[3];
-        int objNum = Physics2D.OverlapCircleNonAlloc(transform.position, 0.35f, objs, Item.LayerItem);
+        int objNum = Physics2D.OverlapCircleNonAlloc(transform.position, 0.35f, objs, Item.LayerCarry);
 
         // Drop objects
         if (MyItem != "Empty")
@@ -102,12 +101,14 @@ public class PlayerController : Person
         }
 
         if (objNum == 0)
+        {
             return false;
+        }
 
         // Pick up objects
         foreach (Collider2D c in objs)
         {
-            Item item = c.GetComponent<Item>();
+            CarryableItem item = c.GetComponent<CarryableItem>();
             if (!item.IsHeld && item.Pickuppable)
             {
                 SetItem(item.PickUp(transform));
@@ -124,7 +125,7 @@ public class PlayerController : Person
     //     sprite and collider size when the shift button is pressed or depressed.
     void HandleCrouching()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && pushing < 2)
         {
             if (MyItem != "Empty")
                 DropItem();
@@ -133,18 +134,10 @@ public class PlayerController : Person
             base.CrouchOn();
         }
         
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift) && pushing < 2)
         {
             SetPose(Pose.Idle);
             base.CrouchOff();
-        }
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (pushing && collision.transform.tag == "Pushable")
-        {
-            StartPushing(collision.transform.GetComponent<PushableObject>());
         }
     }
 
