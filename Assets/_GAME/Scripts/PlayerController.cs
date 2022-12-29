@@ -12,7 +12,6 @@ public class PlayerController : Person
     public static PlayerController Instance;
 
     public static bool MovementEnabled = true;
-    byte pushing = 0;
 
 
     // Start is called before the first frame update
@@ -30,14 +29,14 @@ public class PlayerController : Person
         if (MovementEnabled)
         {
             Move();
-            if (Input.GetMouseButtonDown(0) && pushing == 0)
+            if (Input.GetMouseButtonDown(0) && pushState == 0)
             {
                 if (!Interact())
-                    pushing = 1;
+                    pushState = 1;
             }
 
-            if (Input.GetMouseButtonUp(0) && pushing > 0)
-                pushing = 0;
+            if (Input.GetMouseButtonUp(0) && pushState > 0)
+                pushState = 0;
         }
     }
 
@@ -62,7 +61,7 @@ public class PlayerController : Person
             rb.velocity = new Vector2(deltaX, rb.velocity.y);
 
             // Jumping
-            if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && onFloor && pushing < 2)
+            if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && onFloor && pushState < 2)
             {
                 anim.SetTrigger("Jump");
                 rb.AddForce(new Vector2(0, 14000));
@@ -125,7 +124,7 @@ public class PlayerController : Person
     //     sprite and collider size when the shift button is pressed or depressed.
     void HandleCrouching()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && pushing < 2)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && pushState < 2)
         {
             if (MyItem != "Empty")
                 DropItem();
@@ -134,7 +133,7 @@ public class PlayerController : Person
             base.CrouchOn();
         }
         
-        if (Input.GetKeyUp(KeyCode.LeftShift) && pushing < 2)
+        if (Input.GetKeyUp(KeyCode.LeftShift) && pushState < 2)
         {
             SetPose(Pose.Idle);
             base.CrouchOff();

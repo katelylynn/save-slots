@@ -13,6 +13,12 @@ public class Person : MonoBehaviour
 
     protected bool onFloor = true;
     public bool hasMirror = false;
+    public static byte pushState = 0;
+    // interpretation:
+    // 0 - not trying to push anything
+    // 1 - ready to begin pushing
+    // 2 - pushing to the right
+    // 3 - pushing to the left
     protected Pose myPose;
     public string myItem;
 

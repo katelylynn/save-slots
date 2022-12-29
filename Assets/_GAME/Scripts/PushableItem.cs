@@ -8,7 +8,6 @@ public class PushableItem : Item
     protected override void Start()
     {
         base.Start();
-        transform.tag = "Pushable";
     }
 
     // Update is called once per frame
@@ -17,19 +16,16 @@ public class PushableItem : Item
 
     }
 
-    /*void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (pushing == 1 && collision.transform.tag == "Pushable")
+        /*if (collision.transform.tag == "Person")
         {
-            Debug.Log("Pushing");
-
             // If crouching, stop
-            SetPose(Pose.Idle);
-            base.CrouchOff();
+            
 
             // Begin pushin
             pushing = (byte)(collision.transform.position.x >= transform.position.x ? 2 : 3);
             StartPushing(collision.transform.GetComponent<PushableObject>());
-        }
-    }*/
+        }*/
+    }
 }
