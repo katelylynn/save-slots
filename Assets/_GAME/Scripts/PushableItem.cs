@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PushableItem : Item
 {
+    bool IsMoving = false;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -13,19 +15,18 @@ public class PushableItem : Item
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        /*if (collision.transform.tag == "Person")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            // If crouching, stop
-            
-
-            // Begin pushin
-            pushing = (byte)(collision.transform.position.x >= transform.position.x ? 2 : 3);
-            StartPushing(collision.transform.GetComponent<PushableObject>());
-        }*/
+            // Begin pushing
+            if (PlayerController.PushState == 1 && collision.gameObject.GetComponent<PlayerController>().StartPushing(ItemId, collision.transform.position.x <= transform.position.x))
+            {
+                IsMoving = true;
+            }
+        }
     }
 }

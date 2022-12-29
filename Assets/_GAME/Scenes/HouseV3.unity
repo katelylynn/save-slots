@@ -939,7 +939,7 @@ GameObject:
   - component: {fileID: 469552510}
   - component: {fileID: 469552509}
   - component: {fileID: 469552511}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: fridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}

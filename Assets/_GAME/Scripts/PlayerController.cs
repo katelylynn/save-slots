@@ -10,6 +10,12 @@ public class PlayerController : Person
     public static Pose MyPose;
     public static string MyItem = "Empty";
     public static PlayerController Instance;
+    public static int PushState = 0;
+    // interpretation:
+    // 0 - not trying to push anything
+    // 1 - ready to begin pushing
+    // 2 - pushing to the right
+    // 3 - pushing to the left
 
     public static bool MovementEnabled = true;
 
@@ -29,14 +35,14 @@ public class PlayerController : Person
         if (MovementEnabled)
         {
             Move();
-            if (Input.GetMouseButtonDown(0) && pushState == 0)
+            if (Input.GetMouseButtonDown(0) && PushState == 0)
             {
                 if (!Interact())
-                    pushState = 1;
+                    PushState = 1;
             }
 
-            if (Input.GetMouseButtonUp(0) && pushState > 0)
-                pushState = 0;
+            if (Input.GetMouseButtonUp(0) && PushState > 0)
+                PushState = 0;
         }
     }
 
@@ -61,7 +67,7 @@ public class PlayerController : Person
             rb.velocity = new Vector2(deltaX, rb.velocity.y);
 
             // Jumping
-            if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && onFloor && pushState < 2)
+            if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && onFloor && PushState < 2)
             {
                 anim.SetTrigger("Jump");
                 rb.AddForce(new Vector2(0, 14000));
@@ -124,7 +130,7 @@ public class PlayerController : Person
     //     sprite and collider size when the shift button is pressed or depressed.
     void HandleCrouching()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && pushState < 2)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && PushState < 2)
         {
             if (MyItem != "Empty")
                 DropItem();
@@ -133,7 +139,7 @@ public class PlayerController : Person
             base.CrouchOn();
         }
         
-        if (Input.GetKeyUp(KeyCode.LeftShift) && pushState < 2)
+        if (Input.GetKeyUp(KeyCode.LeftShift) && PushState < 2)
         {
             SetPose(Pose.Idle);
             base.CrouchOff();
@@ -152,6 +158,16 @@ public class PlayerController : Person
         EventManager.PlayerDeath?.Invoke();
         MovementEnabled = false;
         rb.velocity = Vector2.zero;
+    }
+
+    public override bool StartPushing(string item, bool dir)
+    {
+        if (MyItem != "Empty" || Input.GetKey(KeyCode.LeftShift))
+            return false;
+        
+        PushState = dir ? 3 : 2;
+        MyItem = item;
+        return true;
     }
 
     public override void SetPose(Pose newPose)
