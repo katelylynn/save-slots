@@ -1,2 +1,2 @@
-# gam-jam-2022
-Save Slots - Indie Game made by Kyle, Kate, and Anthony
+# Save Slots
+Indie Game made by Kyle, Kate, and Anthony during BC Game Jam 2022
