@@ -160,7 +160,7 @@ public class PlayerController : Person
         rb.velocity = Vector2.zero;
     }
 
-    public override bool StartPushing(string item, bool dir)
+    /*public override bool StartPushing(string item, bool dir)
     {
         if (MyItem != "Empty" || Input.GetKey(KeyCode.LeftShift))
             return false;
@@ -168,7 +168,7 @@ public class PlayerController : Person
         PushState = dir ? 3 : 2;
         MyItem = item;
         return true;
-    }
+    }*/
 
     public override void SetPose(Pose newPose)
     {
